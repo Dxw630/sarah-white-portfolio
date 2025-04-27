@@ -102,12 +102,39 @@ app.get('/admin', async (req, res) => {
       });
     });
 
-    res.render('admin', { categories });
+    const projects = await new Promise((resolve, reject) => {
+      db.all('SELECT * FROM projects', (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+
+    res.render('admin', { categories, projects });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error loading admin page.');
   }
 });
+
+
+// Add New Project (Admin Form Submit)
+app.post('/admin/add', express.urlencoded({ extended: true }), (req, res) => {
+  const { title, image, category_id } = req.body;
+
+  db.run('INSERT INTO projects (title, image, category_id) VALUES (?, ?, ?)',
+    [title, image, category_id],
+    function (err) {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error adding project.');
+      } else {
+        res.redirect('/admin');
+      }
+    }
+  );
+});
+
+
 
 // Server
 const PORT = process.env.PORT || 3000;

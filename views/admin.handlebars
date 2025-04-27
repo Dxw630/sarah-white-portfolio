@@ -43,6 +43,35 @@
 
     <button type="submit" class="btn btn-primary">Add Project</button>
   </form>
+
+  <hr>
+
+  <h2>Manage Existing Projects</h2>
+
+  <div class="container mt-4">
+  <div class="row mt-4">
+    {{#each projects}}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm d-flex flex-column">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{title}}</h5>
+
+            <div class="d-flex justify-content-center mt-3">
+              <form action="/admin/delete/{{id}}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+
+
+
 </div>
 
 </body>
